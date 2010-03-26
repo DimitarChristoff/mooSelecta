@@ -23,8 +23,8 @@ You need to setup your css classes based upon the ones already provided in the e
 Screenshots
 -----------
 
-![Screenshot 1](http://fragged.org/mooSelecta/mooSelecta-large1.gif)
-![Screenshot 2](http://fragged.org/mooSelecta/mooSelecta-large2.gif)
+![Screenshot 1](http://fragged.org/mooSelecta/Example/images/mooSelecta-large1.gif)
+![Screenshot 2](http://fragged.org/mooSelecta/Example/images/mooSelecta-large2.gif)
 
 Known issues
 ------------
