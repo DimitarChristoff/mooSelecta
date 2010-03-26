@@ -24,7 +24,7 @@ Screenshots
 -----------
 
 ![Screenshot 1](http://fragged.org/mooSelecta/mooSelecta-large1.gif)
-![Screenshot 2](http://fragged.org/mooSelecta/mooSelecta-large1.gif)
+![Screenshot 2](http://fragged.org/mooSelecta/mooSelecta-large2.gif)
 
 Known issues
 ------------
