@@ -12,11 +12,11 @@ How to use
 
 You need to setup your css classes based upon the ones already provided in the example
 
-	var selecta = new myselecta({
+	var selecta = new mooSelecta({
 	    selector: "selecta2"
 	});
 
-	new myselecta({
+	new mooSelecta({
 	    selector: "selecta"
 	});
 
