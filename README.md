@@ -11,12 +11,23 @@ The "real" selects are being placed off-screen so their functionality is complet
 forms with them will continue working as per usual.
 
 
+Screenshots
+-----------
+
+Default skin:
+
+![Screenshot 1](http://fragged.org/mooSelecta/Example/images/mooSelecta-large1.gif)
+
+Skin using elements from http://www.emblematiq.com/lab/niceforms/
+
+![Screenshot 2](http://fragged.org/mooSelecta/Example/images/mooSelecta-large2.gif)
+
 How to use
 ----------
 
-You need to setup your CSS classes based upon the ones already provided in the Example/css directory.
+You need to setup your CSS classes based upon the ones already provided in the Example/css directory. Look at the options part of the class to see what bits are customisable and follow the example.
 
-Include mootools core and then mooSelecta.js
+to glue it all together, just Include the mootools core and then mooSelecta.js
 
 Within your **domready** or **load** callback function, just create an instance with whatever options suit you:
 
@@ -55,13 +66,6 @@ there are the following useful methods you can call (if you pass on the instance
 
     ._clearSelection(); // attempt to avoid text node selection when clicking on an option trigger
 
-Screenshots
------------
-
-![Screenshot 1](http://fragged.org/mooSelecta/Example/images/mooSelecta-large1.gif)
-
-![Screenshot 2](http://fragged.org/mooSelecta/Example/images/mooSelecta-large2.gif)
-
 Known issues
 ------------
 
@@ -71,4 +75,4 @@ Known issues
 Known limitations
 -----------------
 
-Obviously, the *select* elements are very complex and OS-driven components that incorporate a number of usability features, albeit -- implemented very differently across different browsers. You cannot possibly hope to write a single tool that can mimic all known behaviours across the different operating systems either. It's a simple usability decision on what works and what does not, feel free to tweak it to your liking or to the liking of your users.
+Obviously, the **select** elements are very complex and OS-driven components that incorporate a number of usability features, albeit -- implemented very differently across different browsers. You cannot possibly hope to write a single tool that can mimic all known behaviours across the different operating systems either. It's a simple usability decision on what works and what does not, feel free to tweak it to your liking or to the liking of your users.
