@@ -88,6 +88,12 @@ var mooSelecta = new Class({
             return op.getProperty("selected");
         });
 
+        // clean up old instances.
+        if (el.retrieve("triggerElement"))
+            el.retrieve("triggerElement").dispose();
+        if (el.retrieve("wrapper"))
+            el.retrieve("wrapper").dispose();
+
 
         // build the top visible element
         el.store("triggerElement", new Element("div", {
