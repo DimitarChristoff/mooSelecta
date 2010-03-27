@@ -25,11 +25,11 @@ Skin using elements from http://www.emblematiq.com/lab/niceforms/
 How to use
 ----------
 
-You need to setup your CSS classes based upon the ones already provided in the Example/css directory. Look at the options part of the class to see what bits are customisable and follow the example.
+You need to setup your CSS classes based upon the ones already provided in the Example/css directory. Look at the options part of the mootools class to see what bits are customisable and follow the example.
 
-to glue it all together, just Include the mootools core and then mooSelecta.js
+To glue it all together, just include the mootools-core and then mooSelecta.js
 
-Within your **domready** or **load** callback function, just create an instance with whatever options suit you:
+Within your **domready** or **load** callback function, create an instance with whatever options suit you:
 
     var selecta = new mooSelecta({
         selector: "selecta"
@@ -52,9 +52,9 @@ Within your **domready** or **load** callback function, just create an instance 
 Class methods
 -------------
 The class itself has plenty of comments throughout so feel free to look at the source code. That being said,
-there are the following useful methods you can call (if you pass on the instance to a variable anyway)
+there are the following useful methods you can call:
 
-    .replaceSelect(el); // applies the current style to a new select element. Also useful if you build options on the fly and change them
+    .replaceSelect(el); // applies the current style to a new select element. Also useful if you build options on the fly and change existing selects
 
     .bindListeners(); // a somewhat private method that will enable listen events for any and all subsequent **mooSelectas**
 
@@ -69,10 +69,10 @@ there are the following useful methods you can call (if you pass on the instance
 Known issues
 ------------
 
-- Problems with Opera and .fireEvent("click"), resulting in keyboard navigation issues
-- By letter look-ups are not tree-based and cycle between just 2 entries
+- Problems with Opera and .fireEvent("click") and the resulting .stop(), causing keyboard navigation issues when pressing enter.
+- By letter look-ups are not tree-based and cycle between just 2 entries, this will be refactored soon.
 
 Known limitations
 -----------------
 
-Obviously, the **select** elements are very complex and OS-driven components that incorporate a number of usability features, albeit -- implemented very differently across different browsers. You cannot possibly hope to write a single tool that can mimic all known behaviours across the different operating systems either. It's a simple usability decision on what works and what does not, feel free to tweak it to your liking or to the liking of your users.
+Obviously, the **select** elements are very complex and OS-driven components that incorporate a number of usability features, albeit -- implemented very differently across browsers. You cannot possibly hope to write a single tool that can mimic all known behaviours across the different operating systems either. It's a simple usability decision on what works and what does not, feel free to tweak it to your liking or to the liking of your users.
