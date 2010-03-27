@@ -2,7 +2,8 @@
 ---
 description: mooSelecta, select element styling replacement
 
-license: MIT-style
+license:
+  MIT-style
 
 authors:
 - Dimitar Christoff
@@ -12,6 +13,7 @@ requires:
 
 provides: [Element]
 
+...
 */
 
 var mooSelecta = new Class({
