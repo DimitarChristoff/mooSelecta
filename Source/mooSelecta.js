@@ -76,7 +76,7 @@ var mooSelecta = new Class({
 
     replaceSelect: function(el) {
         // public method that replaces selects
-        var el = $(el); // adds uid.
+        var el = document.id(el); // adds uid.
 
         if (!el) return;
 
