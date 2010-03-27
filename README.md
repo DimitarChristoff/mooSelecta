@@ -66,9 +66,9 @@ Known issues
 ------------
 
 - Problems with Opera and .fireEvent("click"), resulting in keyboard navigation issues
-- By letter lookups are not tree-based and cycle between just 2 entries
+- By letter look-ups are not tree-based and cycle between just 2 entries
 
 Known limitations
 -----------------
 
-Obviously, the *select* elements
+Obviously, the *select* elements are very complex and OS-driven components that incorporate a number of usability features, albeit -- implemented very differently across different browsers. You cannot possibly hope to write a single tool that can mimic all known behaviours across the different operating systems either. It's a simple usability decision on what works and what does not, feel free to tweak it to your liking or to the liking of your users.
