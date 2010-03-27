@@ -5,19 +5,20 @@ description: mooSelecta, select element styling replacement
 license: MIT-style
 
 authors:
-- Dimitar Christoff - http://fragged.org/ - christoff@gmail.net
+- Dimitar Christoff
 
 requires:
-- [core/1.2.4: Element]
+  core/1.2.4: '*'
 
 provides: [Element]
 
 */
+
 var mooSelecta = new Class({
 
     version: 1.1,
 
-    updated: "26/03/2010 16:37:29",
+    updated: "27/03/2010 01:38:47",
 
 
     Implements: [Options,Events],
