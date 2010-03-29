@@ -20,8 +20,7 @@ var mooSelecta = new Class({
 
     version: 1.2,
 
-    updated: "29/03/2010 15:47:49",
-
+    updated: "29/03/2010 17:26:18",
 
     Implements: [Options,Events],
 
@@ -138,7 +137,8 @@ var mooSelecta = new Class({
         el.set({
             styles: {
                 position: "absolute",
-                top: -100
+                top: -1000,
+                left: -1000
             },
             events: {
                 focus: function() {
@@ -325,6 +325,7 @@ var mooSelecta = new Class({
                         else {
                             // do nothing or disable comment to see other keys you may like to bind.
                             // console.log(e.code, e.key);
+                            e.stop(); // no keyboard events should work outside of allowed ones
                         }
                     break;
                 }
