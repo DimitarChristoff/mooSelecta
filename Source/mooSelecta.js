@@ -20,7 +20,7 @@ var mooSelecta = new Class({
 
     version: 1.2,
 
-    updated: "29/03/2010 13:14:11",
+    updated: "29/03/2010 15:47:49",
 
 
     Implements: [Options,Events],
@@ -43,8 +43,11 @@ var mooSelecta = new Class({
         optionClassOver: "selectaOptionOver",           // onmouseover option class
         allowTextSelect: false,                         // experimental to stop accdiental text selection
         // these are keycodes that correspond to alpha numerics on most ISO keyboards for index lookups of options
-        allowedKeyboardCodes: [48,49,50,51,52,53,54,55,56,57,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90]
+        allowedKeyboardCodes: [48,49,50,51,52,53,54,55,56,57,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90],
+        useClickListener: true                          // binds click events to check for clicks away from dropdown.
     },
+
+    Binds: ["_bindClickListener"],
 
     // internal hashed collection of managed selects
     selects: {},
@@ -146,12 +149,22 @@ var mooSelecta = new Class({
                     this._toggleOptions(el);
 
                 }.bind(this),
-                blur: function() {
+                blur: function(e) {
                     if (this.focused == el)
                         this._toggleOptions(el);
                 }.bind(this)
             }
         });
+
+        // handle labels so they don't interfere by launching a semi-full event.
+        var lbl = document.getElement("label[for="+el.get("id")+"]");
+        if (el.get("id") && lbl) {
+            lbl.addEvent("click", function(e) {
+                new Event(e).stop();
+                el.fireEvent("focus");
+            });
+        }
+
 
         // get all options and port them to wrapper
         el.getElements('option').each(function(option) {
@@ -194,15 +207,8 @@ var mooSelecta = new Class({
     bindListeners: function() {
         // setup valrious click / key events
 
-        document.addEvent("click", function(e) {
-            // listens for client clicks away from triggers and closes like real selects do when user loses interest
-            var e = new Event(e);
-
-            // using a collection which saves a click on an element that's not extended with .hasClass
-            if ($$(e.target).hasClass(this.options.triggerClass).contains(false)) {
-                this._hideOptions();
-            }
-        }.bind(this));
+        if (this.options.useClickListener)
+            document.addEvent("click", this._bindClickListener);
 
         document.addEvents({
             // keyboard listener
@@ -325,6 +331,16 @@ var mooSelecta = new Class({
             }.bind(this)
         });
     }, // end .bindListeners()
+
+    _bindClickListener: function(e) {
+        // listens for client clicks away from triggers and closes like real selects do when user loses interest
+        var e = new Event(e);
+
+        // using a collection which saves a click on an element that's not extended with .hasClass
+        if ($$(e.target).hasClass(this.options.triggerClass).contains(false)) {
+            this._hideOptions();
+        }
+    },
 
     _addOption: function(option, el, selected) {
         // internal method called by replaceSelect that adds each option as a div within the wrapper
