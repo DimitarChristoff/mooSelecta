@@ -3,7 +3,8 @@ mooSelecta
 
 ![Screenshot](http://fragged.org/mooSelecta/mooSelecta.gif)
 
-A mootools *select* element styling replacement as a progressive enhancement.
+A mootools *select* element styling replacement as a progressive enhancement. Tested and working on:
+IE6, IE7, FF 3.6.2, Chromium 5, Safari 4.0.4 (PC), please report others to christoff at gmail.com
 
 Stylable entirely through CSS with the original element events intact, adhering to tabindex, keyboard navigation and so forth.
 
@@ -70,7 +71,6 @@ Known issues
 ------------
 
 - Problems with Opera and .fireEvent("click") and the resulting .stop(), causing keyboard navigation issues when pressing enter.
-- By letter look-ups are not tree-based and cycle between just 2 entries, this will be refactored soon.
 
 Known limitations
 -----------------

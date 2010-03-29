@@ -18,9 +18,9 @@ provides: [Element]
 
 var mooSelecta = new Class({
 
-    version: 1.1,
+    version: 1.2,
 
-    updated: "27/03/2010 01:38:47",
+    updated: "29/03/2010 13:14:11",
 
 
     Implements: [Options,Events],
@@ -285,27 +285,36 @@ var mooSelecta = new Class({
 
                         // is is alpha numeric allowed?
                         if (this.options.allowedKeyboardCodes.contains(e.code)) {
-                            var done = false;
-
                             // loop through current option texts array cache for matches
-                            this.optionList["k"+this.focused.uid].each(function(op, i) {
-                                if (done)
-                                    return;
+                            var matchingKeys = [];
+                            var selected = false;
 
-                                if (op.contains(e.key)) {
-                                    // matches but is it initial char?
-                                    pos = op.indexOf(e.key);
-                                    if (pos == 0) {
-                                        // see if its already selected...
-                                        if (!ops[i].hasClass(this.options.optionClassSelected)) {
-                                            ops[i].fireEvent("click");
-                                            done = true;
-                                            old.fireEvent("focus");
-                                        }
-                                        // this needs refactoring
-                                    }
-                                }
+                            var applicable = this.optionList["k"+this.focused.uid].filter(function(el, index) {
+                                if (ops[index].hasClass(this.options.optionClassSelected)) selected = index;
+                                var match = el.indexOf(e.key) == 0;
+                                if (match)
+                                    matchingKeys.push(index);
+                                return match;
                             }, this);
+
+                            if (applicable.length) {
+                                if (!matchingKeys.contains(selected)) {
+                                    selected = matchingKeys[0];
+                                }
+                                else {
+                                    if (ops[selected+1] && matchingKeys.contains(selected+1)) {
+                                        selected++;
+                                    }
+                                    else {
+                                        selected = matchingKeys[0];
+                                    }
+
+                                }
+
+                                ops[selected].fireEvent("click");
+                                old.fireEvent("focus");
+                                done = true;
+                            }
                         }
                         else {
                             // do nothing or disable comment to see other keys you may like to bind.
