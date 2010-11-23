@@ -428,9 +428,11 @@ var mooSelecta = new Class({
         if (this.options.allowTextSelect || Browser.ie6) // not sure how IE6 does this
             return;
 
-        if (document.selection && document.selection.empty) {
-            document.selection.empty();
-        } else if (window.getSelection) {
+        if (!!document.selection && !!document.selection.empty) {
+            try {
+                document.selection.empty();
+            } catch(e) {} // IE8 throws exception on hidden selections
+        } else if (!!window.getSelection) {
             window.getSelection().removeAllRanges();
         }
     }
