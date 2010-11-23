@@ -127,11 +127,14 @@ var mooSelecta = new Class({
         }
 
         // create the options wrapper
+        var pos = el.getPosition();
         el.store("wrapper", new Element("div", {
             "class": this.options.wrapperClass,
             styles: {
                 width: width,
-                zIndex: 10000
+                zIndex: 10000,
+                left: pos.x,
+                top: pos.y + el.retrieve("triggerElement").getSize().y,
             }
         }).inject(el.retrieve("triggerElement"), "after").addClass(this.options.wrapperShadow));
 
