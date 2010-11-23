@@ -134,7 +134,7 @@ var mooSelecta = new Class({
                 width: width,
                 zIndex: 10000,
                 left: pos.x,
-                top: pos.y + el.retrieve("triggerElement").getSize().y,
+                top: pos.y + el.retrieve("triggerElement").getSize().y
             }
         }).inject(el.retrieve("triggerElement"), "after").addClass(this.options.wrapperShadow));
 
