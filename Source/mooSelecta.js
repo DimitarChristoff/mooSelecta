@@ -1,24 +1,27 @@
 /*
 ---
+ 
+name: Fx.Text
+ 
 description: mooSelecta, select element styling replacement
 
-license:
-  MIT-style
+authors: Dimitar Christoff
+ 
+license: MIT-style license.
 
-authors:
-- Dimitar Christoff
-
-requires:
-  core/1.2.4: '*'
-
-provides: [Element]
-
+version: 1.2.1
+ 
+requires: 
+  - Core/*
+ 
+provides: mooSelecta
+ 
 ...
 */
 
 var mooSelecta = new Class({
 
-    version: 1.2,
+    version: 1.2.1,
 
     updated: "29/03/2010 17:26:18",
 
@@ -115,7 +118,7 @@ var mooSelecta = new Class({
             new Element("div", {
                 styles: {
                     float: "left",
-                    position: (Browser.Engine.trident4) ? "absolute" : "relative",
+                    position: (Browser.ie6) ? "absolute" : "relative",
                     background: "url("+this.options.triggerBeforeImage+") no-repeat",
                     width: this.options.triggerBeforeImageWidth,
                     height: this.options.triggerBeforeImageHeight
@@ -354,7 +357,7 @@ var mooSelecta = new Class({
         oldList.push(text.toLowerCase());
         var tempObj = {};
         tempObj["k" + el.uid] = oldList;
-        $extend(this.optionList, tempObj);
+        Object.append(this.optionList, tempObj);
         // end store
 
         var opDiv = new Element("div", {
@@ -396,7 +399,7 @@ var mooSelecta = new Class({
 
         // scroll to selected from .toElement in core but w/o a fx.slide instance
         var parent = el.retrieve("wrapper").getPosition(this.options.overflown);
-		var target = el.retrieve("wrapper").getElement("div." + this.options.optionClassSelected).getPosition(this.options.overflown);
+        var target = el.retrieve("wrapper").getElement("div." + this.options.optionClassSelected).getPosition(this.options.overflown);
         el.retrieve("wrapper").scrollTo(target.x - parent.x, target.y - parent.y);
         this._clearSelection();
     },
@@ -413,7 +416,7 @@ var mooSelecta = new Class({
 
     _clearSelection: function() {
         // removes document selection
-        if (this.options.allowTextSelect || Browser.Engine.trident4) // not sure how IE6 does this
+        if (this.options.allowTextSelect || Browser.ie6) // not sure how IE6 does this
             return;
 
         if (document.selection && document.selection.empty) {
