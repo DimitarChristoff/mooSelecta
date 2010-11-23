@@ -37,6 +37,7 @@ var mooSelecta = new Class({
     // don't change these here but on the instance (unless you want to)
     options: {
         selector: "selecta",                            // class / selector for selects to convert
+        positionRelativeSelector: null,                 // class / selector for a positioned parent element
         triggerClass: "selectaTrigger",                 // class of the replacement div
         triggerPadding: 30+5,                           // compensate for left/right padding of text
         triggerBeforeImage: "",                         // advanced styling of trigger like a round image
@@ -133,7 +134,7 @@ var mooSelecta = new Class({
         }
 
         // create the options wrapper
-        var pos = el.getPosition();
+        var pos = el.getPosition((!!this.options.positionRelativeSelector ? el.getParent(this.options.positionRelativeSelector) : null));
         el.store("wrapper", new Element("div", {
             "class": this.options.wrapperClass,
             styles: {
