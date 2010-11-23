@@ -140,7 +140,7 @@ var mooSelecta = new Class({
             styles: {
                 width: width,
                 zIndex: 10000,
-                left: pos.x,
+                left: pos.x - this.options.triggerBeforeImageWidth,
                 top: pos.y + el.retrieve("triggerElement").getSize().y
             }
         }).inject(el.retrieve("triggerElement"), "after").addClass(this.options.wrapperShadow));
