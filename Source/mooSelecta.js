@@ -12,7 +12,13 @@ license: MIT-style license.
 version: 1.2.1
  
 requires: 
-  - Core/*
+  - Core/String
+  - Core/Event
+  - Core/Browser
+  - Core/Element
+  - Core/Element.Dimensions
+  - More/Class.Binds
+  - More/Hash
  
 provides: mooSelecta
  
