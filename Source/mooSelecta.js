@@ -1,27 +1,35 @@
 /*
 ---
+ 
+name: Fx.Text
+ 
 description: mooSelecta, select element styling replacement
 
-license:
-  MIT-style
+authors: Dimitar Christoff
+ 
+license: MIT-style license.
 
-authors:
-- Dimitar Christoff
-
-requires:
-  core/1.2.4: '*'
-
-provides: [Element]
-
+version: 1.2.1
+ 
+requires: 
+  - Core/String
+  - Core/Event
+  - Core/Browser
+  - Core/Element
+  - Core/Element.Dimensions
+  - More/Class.Binds
+  - More/Hash
+ 
+provides: mooSelecta
+ 
 ...
 */
 
 var mooSelecta = new Class({
 
-    version: 1.2,
+    version: 1.2.1,
 
-    updated: "29/03/2010 15:47:49",
-
+    updated: "29/03/2010 17:26:18",
 
     Implements: [Options,Events],
 
@@ -29,6 +37,7 @@ var mooSelecta = new Class({
     // don't change these here but on the instance (unless you want to)
     options: {
         selector: "selecta",                            // class / selector for selects to convert
+        positionRelativeSelector: null,                 // class / selector for a positioned parent element
         triggerClass: "selectaTrigger",                 // class of the replacement div
         triggerPadding: 30+5,                           // compensate for left/right padding of text
         triggerBeforeImage: "",                         // advanced styling of trigger like a round image
@@ -116,7 +125,7 @@ var mooSelecta = new Class({
             new Element("div", {
                 styles: {
                     float: "left",
-                    position: (Browser.Engine.trident4) ? "absolute" : "relative",
+                    position: (Browser.ie6) ? "absolute" : "relative",
                     background: "url("+this.options.triggerBeforeImage+") no-repeat",
                     width: this.options.triggerBeforeImageWidth,
                     height: this.options.triggerBeforeImageHeight
@@ -125,11 +134,14 @@ var mooSelecta = new Class({
         }
 
         // create the options wrapper
+        var pos = el.getPosition((!!this.options.positionRelativeSelector ? el.getParent(this.options.positionRelativeSelector) : null));
         el.store("wrapper", new Element("div", {
             "class": this.options.wrapperClass,
             styles: {
                 width: width,
-                zIndex: 10000
+                zIndex: 10000,
+                left: pos.x - this.options.triggerBeforeImageWidth,
+                top: pos.y + el.retrieve("triggerElement").getSize().y
             }
         }).inject(el.retrieve("triggerElement"), "after").addClass(this.options.wrapperShadow));
 
@@ -138,7 +150,8 @@ var mooSelecta = new Class({
         el.set({
             styles: {
                 position: "absolute",
-                top: -100
+                top: -1000,
+                left: -1000
             },
             events: {
                 focus: function() {
@@ -325,6 +338,7 @@ var mooSelecta = new Class({
                         else {
                             // do nothing or disable comment to see other keys you may like to bind.
                             // console.log(e.code, e.key);
+                            e.stop(); // no keyboard events should work outside of allowed ones
                         }
                     break;
                 }
@@ -353,7 +367,7 @@ var mooSelecta = new Class({
         oldList.push(text.toLowerCase());
         var tempObj = {};
         tempObj["k" + el.uid] = oldList;
-        $extend(this.optionList, tempObj);
+        Object.append(this.optionList, tempObj);
         // end store
 
         var opDiv = new Element("div", {
@@ -395,7 +409,7 @@ var mooSelecta = new Class({
 
         // scroll to selected from .toElement in core but w/o a fx.slide instance
         var parent = el.retrieve("wrapper").getPosition(this.options.overflown);
-		var target = el.retrieve("wrapper").getElement("div." + this.options.optionClassSelected).getPosition(this.options.overflown);
+        var target = el.retrieve("wrapper").getElement("div." + this.options.optionClassSelected).getPosition(this.options.overflown);
         el.retrieve("wrapper").scrollTo(target.x - parent.x, target.y - parent.y);
         this._clearSelection();
     },
@@ -412,12 +426,14 @@ var mooSelecta = new Class({
 
     _clearSelection: function() {
         // removes document selection
-        if (this.options.allowTextSelect || Browser.Engine.trident4) // not sure how IE6 does this
+        if (this.options.allowTextSelect || Browser.ie6) // not sure how IE6 does this
             return;
 
-        if (document.selection && document.selection.empty) {
-            document.selection.empty();
-        } else if (window.getSelection) {
+        if (!!document.selection && !!document.selection.empty) {
+            try {
+                document.selection.empty();
+            } catch(e) {} // IE8 throws exception on hidden selections
+        } else if (!!window.getSelection) {
             window.getSelection().removeAllRanges();
         }
     }
