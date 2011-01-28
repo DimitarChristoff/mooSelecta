@@ -71,6 +71,10 @@ div.selectaOption {
 div.selectaOptionSelected {
     background: #ffffcf;
 }
+div.selectaDisabled {
+    background: #555;
+    color: #000;
+}
 div.selectaOptionOver {
     background: yellow;
 }
