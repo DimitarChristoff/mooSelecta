@@ -1,42 +1,41 @@
 /*
 ---
- 
+
 name: Fx.Text
- 
+
 description: mooSelecta, select element styling replacement
 
-authors: Dimitar Christoff
- 
+authors: Dimitar Christoff, Andre Fiedler
+
 license: MIT-style license.
 
-version: 1.2.1
- 
-requires: 
+version: 1.2.9
+
+requires:
   - Core/String
   - Core/Event
   - Core/Browser
   - Core/Element
   - Core/Element.Dimensions
-  - More/Class.Binds
-  - More/Hash
- 
+
 provides: mooSelecta
- 
+
 ...
 */
 
 var mooSelecta = new Class({
 
-    version: 1.2.1,
+    version: "1.2.9",
 
-    updated: "29/03/2010 17:26:18",
+    updated: "28/01/2011 14:54:22",
 
     Implements: [Options,Events],
 
     // default options
     // don't change these here but on the instance (unless you want to)
     options: {
-        selector: "selecta",                            // class / selector for selects to convert
+        parentNode: document,
+        selector: "select.selecta",                     // class / selector for selects to convert
         positionRelativeSelector: null,                 // class / selector for a positioned parent element
         triggerClass: "selectaTrigger",                 // class of the replacement div
         triggerPadding: 30+5,                           // compensate for left/right padding of text
@@ -56,8 +55,6 @@ var mooSelecta = new Class({
         useClickListener: true                          // binds click events to check for clicks away from dropdown.
     },
 
-    Binds: ["_bindClickListener"],
-
     // internal hashed collection of managed selects
     selects: {},
 
@@ -72,15 +69,12 @@ var mooSelecta = new Class({
         this.setOptions(options);
 
         // locate and apply selects to all required ones.
-        var selects = $$('select.'+this.options.selector);
+        var selects = this.options.parentNode.getElements(this.options.selector);
 
         if (!selects.length)
             return "nothing to do, selector came up empty!";
 
         selects.each(this.replaceSelect.bind(this));
-
-        // convert object to hash
-        this.selects = new Hash(this.selects);
 
         // bind mouseclicks and keytyping
         this.bindListeners();
@@ -221,7 +215,7 @@ var mooSelecta = new Class({
         // setup valrious click / key events
 
         if (this.options.useClickListener)
-            document.addEvent("click", this._bindClickListener);
+            document.addEvent("click", this._bindClickListener.bind(this));
 
         document.addEvents({
             // keyboard listener
@@ -299,7 +293,6 @@ var mooSelecta = new Class({
                     break;
                     default:
                         // the "other" keys.
-
                         var old = this.focused, ops = this.focused.retrieve("wrapper").getElements("div."+this.options.optionClass);
 
                         // is is alpha numeric allowed?
@@ -367,6 +360,7 @@ var mooSelecta = new Class({
         oldList.push(text.toLowerCase());
         var tempObj = {};
         tempObj["k" + el.uid] = oldList;
+
         Object.append(this.optionList, tempObj);
         // end store
 
@@ -416,7 +410,7 @@ var mooSelecta = new Class({
 
     _hideOptions: function() {
         // private called on cleanup / away click
-        this.selects.getValues().each(function(el) {
+        Object.values(this.selects).each(function(el) {
             if (el.retrieve("wrapper").getStyle("display") != "none")
                 el.fireEvent("blur");
             el.retrieve("wrapper").setStyle("display", "none");
