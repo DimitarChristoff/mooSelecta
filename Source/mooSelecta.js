@@ -48,6 +48,7 @@ var mooSelecta = new Class({
         wrapperHeight: 0,                               // maximum allowed height for dropdown before it scrolls
         optionClass: "selectaOption",                   // base class of indivdual options
         optionClassSelected: "selectaOptionSelected",   // pre-selected value class
+        optionDisabledClass: "selectaDisabled",         // if option disabled=disabled
         optionClassOver: "selectaOptionOver",           // onmouseover option class
         allowTextSelect: false,                         // experimental to stop accdiental text selection
         // these are keycodes that correspond to alpha numerics on most ISO keyboards for index lookups of options
@@ -95,11 +96,13 @@ var mooSelecta = new Class({
         });
 
         // clean up old instances.
-        if (el.retrieve("triggerElement"))
-            el.retrieve("triggerElement").dispose();
-        if (el.retrieve("wrapper"))
-            el.retrieve("wrapper").dispose();
+        if (el.retrieve("triggerElement")) {
+            el.retrieve("triggerElement").destroy();
+        }
 
+        if (el.retrieve("wrapper")) {
+            el.retrieve("wrapper").destroy();
+        }
 
         // build the top visible element
         el.store("triggerElement", new Element("div", {
@@ -134,7 +137,7 @@ var mooSelecta = new Class({
             styles: {
                 width: width,
                 zIndex: 10000,
-                left: pos.x - this.options.triggerBeforeImageWidth,
+                left: pos.x + 1 - this.options.triggerBeforeImageWidth,
                 top: pos.y + el.retrieve("triggerElement").getSize().y
             }
         }).inject(el.retrieve("triggerElement"), "after").addClass(this.options.wrapperShadow));
@@ -176,7 +179,7 @@ var mooSelecta = new Class({
         // get all options and port them to wrapper
         el.getElements('option').each(function(option) {
             var selected = false;
-            if (option.getProperty("selected")) {
+            if (option.get("selected")) {
                 el.retrieve("triggerElement").set("html", option.get("text"));
                 selected = true;
             }
@@ -378,6 +381,10 @@ var mooSelecta = new Class({
                     if (e && e.type && e.stop)
                         e.stop();
 
+                    if (opDiv.hasClass(this.options.optionDisabledClass)) {
+                        return false; // do nothing!
+                    }
+
                     // menu stuff visual
                     el.retrieve("wrapper").getChildren().removeClass(this.options.optionClassSelected);
                     opDiv.addClass(this.options.optionClassSelected);
@@ -390,8 +397,13 @@ var mooSelecta = new Class({
             }
         }).store("value", option.get("value")).inject(el.retrieve("wrapper")).addClass("cur");
 
-        if (selected)
+        if (option.get("disabled")) {
+            opDiv.addClass(this.options.optionDisabledClass);
+        }
+
+        if (selected) {
             opDiv.addClass(this.options.optionClassSelected);
+        }
 
     },
 
