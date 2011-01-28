@@ -4,9 +4,9 @@ mooSelecta
 ![Screenshot](http://fragged.org/mooSelecta/mooSelecta.gif)
 
 A mootools *select* element styling replacement as a progressive enhancement. Tested and working on:
-IE6, IE7, FF 3.6.2, Chromium 5, Safari 4.0.4 (PC), please report others to christoff at gmail.com
+IE6, IE7, FF 3.6.2, Chromium 5, Safari 4.0.4 (PC), please report others to christoff at gmail.com. Now updated for mootools 1.3
 
-Stylable entirely through CSS with the original element events intact, adhering to tabindex, keyboard navigation and so forth.
+Style-able entirely through CSS with the original element events intact, adhering to tabindex, keyboard navigation and so forth.
 
 The "real" selects are being placed off-screen so their functionality is completely preserved in that any
 forms with them will continue working as per usual.
@@ -33,11 +33,11 @@ To glue it all together, just include the mootools-core and then mooSelecta.js
 Within your **domready** or **load** callback function, create an instance with whatever options suit you:
 
     var selecta = new mooSelecta({
-        selector: "selecta"
+        selector: "select.selecta"
     });
 
     new mooSelecta({
-        selector: "selecta2",
+        selector: "select.selecta2",
         triggerClass: "selecta2",
         triggerPadding: 24,
         triggerBeforeImage: "/img/select-left.png",
