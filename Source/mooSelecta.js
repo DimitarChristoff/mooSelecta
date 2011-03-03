@@ -1,7 +1,7 @@
 /*
 ---
 
-name: Fx.Text
+name: mooSelecta
 
 description: mooSelecta, select element styling replacement
 
@@ -25,9 +25,9 @@ provides: mooSelecta
 
 var mooSelecta = new Class({
 
-    version: "1.2.9",
+    version: "1.3.0a",
 
-    updated: "28/01/2011 14:54:22",
+    updated: "03/03/2011 11:22:31",
 
     Implements: [Options,Events],
 
