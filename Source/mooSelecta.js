@@ -5,11 +5,11 @@ name: mooSelecta
 
 description: mooSelecta, select element styling replacement
 
-authors: Dimitar Christoff, Andre Fiedler
+contributing authors: Dimitar Christoff, Andre Fiedler
 
 license: MIT-style license.
 
-version: 1.2.9
+version: 1.3a
 
 requires:
   - Core/String
@@ -27,7 +27,7 @@ var mooSelecta = new Class({
 
     version: "1.3.0a",
 
-    updated: "03/03/2011 11:22:31",
+    updated: "28/03/2011 11:20:01",
 
     Implements: [Options,Events],
 
@@ -72,8 +72,9 @@ var mooSelecta = new Class({
         // locate and apply selects to all required ones.
         var selects = this.options.parentNode.getElements(this.options.selector);
 
-        if (!selects.length)
-            return "nothing to do, selector came up empty!";
+        if (!selects.length) {
+            return false; // "nothing to do, selector came up empty!";
+        }
 
         selects.each(this.replaceSelect.bind(this));
 
@@ -83,9 +84,11 @@ var mooSelecta = new Class({
 
     replaceSelect: function(el) {
         // public method that replaces selects
-        var el = document.id(el); // adds uid.
+        el = document.id(el); // adds uid.
 
-        if (!el) return;
+        if (!el) {
+            return;
+        }
 
         // gets existing element's width to use
         var width = el.getSize().x;
@@ -121,7 +124,7 @@ var mooSelecta = new Class({
         if (this.options.triggerBeforeImage.length) {
             new Element("div", {
                 styles: {
-                    float: "left",
+                    "float": "left",
                     position: (Browser.ie6) ? "absolute" : "relative",
                     background: "url("+this.options.triggerBeforeImage+") no-repeat",
                     width: this.options.triggerBeforeImageWidth,
@@ -152,16 +155,18 @@ var mooSelecta = new Class({
             },
             events: {
                 focus: function() {
-                    if (this.focused)
+                    if (this.focused) {
                         this._hideOptions();
+                    }
 
                     this.focused = el;
                     this._toggleOptions(el);
 
                 }.bind(this),
                 blur: function(e) {
-                    if (this.focused == el)
+                    if (this.focused == el) {
                         this._toggleOptions(el);
+                    }
                 }.bind(this)
             }
         });
@@ -209,35 +214,42 @@ var mooSelecta = new Class({
         });
 
         // export the managed select to the hash
-        if (el.uid && el)
+        if (el.uid && el) {
             this.selects[el.uid] = el;
+        }
 
     }, // end .replaceSelect();
 
     bindListeners: function() {
         // setup valrious click / key events
 
-        if (this.options.useClickListener)
+        if (this.options.useClickListener) {
             document.addEvent("click", this._bindClickListener.bind(this));
+        }
 
         document.addEvents({
             // keyboard listener
             keydown: function(e) {
-                var e = new Event(e);
+                e = new Event(e);
+
+                var ops, old, done;
 
                 // if no menu is currently open, don't do anything.
-                if (!this.focused)
+                if (!this.focused) {
                     return;
+                }
 
                 switch(e.code) {
                     case 40: // down arrow option navigation
                         new Event(e).stop();
                         // ops should really be cached outside here
-                        var ops = this.focused.retrieve("wrapper").getElements("div."+this.options.optionClass), done = false;
+                        ops = this.focused.retrieve("wrapper").getElements("div."+this.options.optionClass);
+                        done = false;
 
                         ops.each(function(el, i) {
-                            if (ops.length-1 == i || done)
+                            if (ops.length-1 == i || done) {
                                 return;
+                            }
 
                             if (el.hasClass(this.options.optionClassSelected)) {
                                 ops.removeClass(this.options.optionClassOver);
@@ -251,11 +263,13 @@ var mooSelecta = new Class({
                     break;
                     case 38: // up arrow option navigation
                         new Event(e).stop();
-                        var ops = this.focused.retrieve("wrapper").getElements("div."+this.options.optionClass), done = false;
+                        ops = this.focused.retrieve("wrapper").getElements("div."+this.options.optionClass);
+                        done = false;
 
                         ops.each(function(el, i) {
-                            if (done)
+                            if (done) {
                                 return;
+                            }
 
                             if (el.hasClass(this.options.optionClassSelected)) {
                                 if (i > 0) {
@@ -280,7 +294,7 @@ var mooSelecta = new Class({
                     case 35:
                         // go to last option via pgdn or end
                         new Event(e).stop();
-                        var old = this.focused;
+                        old = this.focused;
                         this.focused.retrieve("wrapper").getElements("div."+this.options.optionClass).getLast().fireEvent("click");
                         old.fireEvent("focus");
 
@@ -289,14 +303,15 @@ var mooSelecta = new Class({
                     case 36:
                         // go to first option via pgup or home
                         new Event(e).stop();
-                        var old = this.focused;
+                        old = this.focused;
                         this.focused.retrieve("wrapper").getElement("div."+this.options.optionClass).fireEvent("click");
                         old.fireEvent("focus");
 
                     break;
                     default:
                         // the "other" keys.
-                        var old = this.focused, ops = this.focused.retrieve("wrapper").getElements("div."+this.options.optionClass);
+                        old = this.focused;
+                        ops = this.focused.retrieve("wrapper").getElements("div."+this.options.optionClass);
 
                         // is is alpha numeric allowed?
                         if (this.options.allowedKeyboardCodes.contains(e.code)) {
@@ -305,10 +320,13 @@ var mooSelecta = new Class({
                             var selected = false;
 
                             var applicable = this.optionList["k"+this.focused.uid].filter(function(el, index) {
-                                if (ops[index].hasClass(this.options.optionClassSelected)) selected = index;
-                                var match = el.indexOf(e.key) == 0;
-                                if (match)
+                                if (ops[index].hasClass(this.options.optionClassSelected)) {
+                                    selected = index;
+                                }
+                                var match = el.indexOf(e.key) === 0;
+                                if (match) {
                                     matchingKeys.push(index);
+                                }
                                 return match;
                             }, this);
 
@@ -344,7 +362,7 @@ var mooSelecta = new Class({
 
     _bindClickListener: function(e) {
         // listens for client clicks away from triggers and closes like real selects do when user loses interest
-        var e = new Event(e);
+        e = new Event(e);
 
         // using a collection which saves a click on an element that's not extended with .hasClass
         if ($$(e.target).hasClass(this.options.triggerClass).contains(false)) {
@@ -355,8 +373,9 @@ var mooSelecta = new Class({
     _addOption: function(option, el, selected) {
         // internal method called by replaceSelect that adds each option as a div within the wrapper
         var text = option.get("text").trim();
-        if (!text.length)
+        if (!text.length) {
             text = "&nbsp;";
+        }
 
         // store options relevant to element uid.
         var oldList = this.optionList["k" + el.uid] || [];
@@ -378,8 +397,9 @@ var mooSelecta = new Class({
                     opDiv.removeClass(this.options.optionClassOver);
                 }.bind(this),
                 click: function(e) {
-                    if (e && e.type && e.stop)
+                    if (e && e.type && e.stop) {
                         e.stop();
+                    }
 
                     if (opDiv.hasClass(this.options.optionDisabledClass)) {
                         return false; // do nothing!
@@ -423,8 +443,9 @@ var mooSelecta = new Class({
     _hideOptions: function() {
         // private called on cleanup / away click
         Object.values(this.selects).each(function(el) {
-            if (el.retrieve("wrapper").getStyle("display") != "none")
+            if (el.retrieve("wrapper").getStyle("display") != "none") {
                 el.fireEvent("blur");
+            }
             el.retrieve("wrapper").setStyle("display", "none");
             el.focused = false;
         });
@@ -432,8 +453,9 @@ var mooSelecta = new Class({
 
     _clearSelection: function() {
         // removes document selection
-        if (this.options.allowTextSelect || Browser.ie6) // not sure how IE6 does this
+        if (this.options.allowTextSelect || Browser.ie6) { // not sure how IE6 does this
             return;
+        }
 
         if (!!document.selection && !!document.selection.empty) {
             try {
