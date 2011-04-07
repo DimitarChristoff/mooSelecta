@@ -5,7 +5,7 @@ name: mooSelecta
 
 description: mooSelecta, select element styling replacement
 
-contributing authors: Dimitar Christoff, Andre Fiedler
+authors: Dimitar Christoff, Andre Fiedler
 
 license: MIT-style license.
 
