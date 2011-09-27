@@ -9,7 +9,7 @@ authors: Dimitar Christoff, Andre Fiedler
 
 license: MIT-style license.
 
-version: 1.3a
+version: 1.4.0a
 
 requires:
   - Core/String
@@ -25,7 +25,7 @@ provides: mooSelecta
 
 var mooSelecta = new Class({
 
-    version: "1.3.0a",
+    version: "1.4.0a",
 
     updated: "28/03/2011 11:20:01",
 
@@ -175,7 +175,9 @@ var mooSelecta = new Class({
         var lbl = document.getElement("label[for="+el.get("id")+"]");
         if (el.get("id") && lbl) {
             lbl.addEvent("click", function(e) {
-                new Event(e).stop();
+                if (e && e.stop) {
+                    e.stop();
+                }
                 el.fireEvent("focus");
             });
         }
@@ -207,7 +209,9 @@ var mooSelecta = new Class({
         // attach a click event to trigger element
         el.retrieve("triggerElement").addEvents({
             click: function(e) {
-                new Event(e).stop();
+                if (e && e.stop) {
+                    e.stop();
+                }
                 // toggler, click on opened closes it.
                 el.fireEvent((this.focused == el) ? "blur" : "focus");
             }.bind(this)
@@ -230,7 +234,6 @@ var mooSelecta = new Class({
         document.addEvents({
             // keyboard listener
             keydown: function(e) {
-                e = new Event(e);
 
                 var ops, old, done;
 
@@ -241,7 +244,9 @@ var mooSelecta = new Class({
 
                 switch(e.code) {
                     case 40: // down arrow option navigation
-                        new Event(e).stop();
+                        if (e && e.stop) {
+                            e.stop();
+                        }
                         // ops should really be cached outside here
                         ops = this.focused.retrieve("wrapper").getElements("div."+this.options.optionClass);
                         done = false;
@@ -262,7 +267,9 @@ var mooSelecta = new Class({
 
                     break;
                     case 38: // up arrow option navigation
-                        new Event(e).stop();
+                        if (e && e.stop) {
+                            e.stop();
+                        }
                         ops = this.focused.retrieve("wrapper").getElements("div."+this.options.optionClass);
                         done = false;
 
@@ -284,7 +291,9 @@ var mooSelecta = new Class({
 
                     break;
                     case 13: // enter
-                        new Event(e).stop();
+                        if (e && e.stop) {
+                            e.stop();
+                        }
                         this.focused.retrieve("wrapper").getElements("div."+this.options.optionClassSelected).fireEvent("click");
                     break;
                     case 9: // tabbed out, blur auto...
@@ -293,7 +302,9 @@ var mooSelecta = new Class({
                     case 34:
                     case 35:
                         // go to last option via pgdn or end
-                        new Event(e).stop();
+                        if (e && e.stop) {
+                            e.stop();
+                        }
                         old = this.focused;
                         this.focused.retrieve("wrapper").getElements("div."+this.options.optionClass).getLast().fireEvent("click");
                         old.fireEvent("focus");
@@ -302,7 +313,9 @@ var mooSelecta = new Class({
                     case 33:
                     case 36:
                         // go to first option via pgup or home
-                        new Event(e).stop();
+                        if (e && e.stop) {
+                            e.stop();
+                        }
                         old = this.focused;
                         this.focused.retrieve("wrapper").getElement("div."+this.options.optionClass).fireEvent("click");
                         old.fireEvent("focus");
@@ -352,7 +365,10 @@ var mooSelecta = new Class({
                         else {
                             // do nothing or disable comment to see other keys you may like to bind.
                             // console.log(e.code, e.key);
-                            e.stop(); // no keyboard events should work outside of allowed ones
+                            if (e && e.stop) {
+                                e.stop();
+                            }
+
                         }
                     break;
                 }
@@ -362,9 +378,11 @@ var mooSelecta = new Class({
 
     _bindClickListener: function(e) {
         // listens for client clicks away from triggers and closes like real selects do when user loses interest
-        e = new Event(e);
-
         // using a collection which saves a click on an element that's not extended with .hasClass
+        if (!(e && e.target)) {
+            return;
+        }
+
         if ($$(e.target).hasClass(this.options.triggerClass).contains(false)) {
             this._hideOptions();
         }
