@@ -4,13 +4,13 @@ mooSelecta
 ![Screenshot](http://fragged.org/mooSelecta/mooSelecta.gif)
 
 A MooTools *select* element styling replacement Class done as a progressive enhancement. Tested and working on:
-IE6, IE7, IE8, IE9, FF 3, FF4, Chromium 5+, Safari 4.0.4, (please report others to christoff at gmail.com)
+IE6, IE7, IE8, IE9, FF3+, Chromium 5+, Safari 4.0.4+, (please report others to christoff at gmail.com)
 
 Style-able entirely through CSS with the original element events intact, adhering to tabindex, keyboard navigation and so forth.
 
 The "real" selects are being placed off-screen so their functionality is completely preserved in that any forms with them will continue working as per usual.
 
-*Now updated for MooTools 1.3 without compatibility mode.*
+*Now updated for MooTools 1.4 without compatibility mode.*
 
 Screenshots
 -----------
