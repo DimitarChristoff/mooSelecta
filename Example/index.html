@@ -23,7 +23,7 @@ Date Created: 26/03/2010 20:41:42
 <body>
 
 <h1>Select Dropdown replacement through progressive enhancement</h1>
-<h2>through mootools 1.2.4 (core required only)</h2>
+<h2>through mootools 1.4.1 (core required only)</h2>
 
 
 <div class="formLeft">
@@ -144,11 +144,10 @@ Date Created: 26/03/2010 20:41:42
     <li>auto position above element if not enough space at bottom</li>
 </ul>
 <br /><br />
-<script type="text/javascript" src="/js/mootools-1.2.4-core-yc.js"></script>
+<script type="text/javascript" src="mootools-core-1.4.1.js"></script>
 <script type="text/javascript" src="../Source/mooSelecta.js"></script>
 <script type="text/javascript">
-window.addEvent("domready", function() {
-
+window.addEvent('domready', function() {
     new mooSelecta({
         wrapperHeight: 194
     });
