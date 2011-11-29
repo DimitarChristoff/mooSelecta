@@ -5,7 +5,7 @@ name: mooSelecta
 
 description: mooSelecta, select element styling replacement
 
-authors: Dimitar Christoff, Andre Fiedler
+authors: Dimitar Christoff, Andre Fiedler, Judicael Briand
 
 license: MIT-style license.
 
@@ -25,9 +25,9 @@ provides: mooSelecta
 
 var mooSelecta = new Class({
 
-    version: "1.4.0a",
+    version: "1.4.0b",
 
-    updated: "28/03/2011 11:20:01",
+    updated: "28/11/2011 11:50:01",
 
     Implements: [Options,Events],
 
@@ -140,7 +140,7 @@ var mooSelecta = new Class({
             styles: {
                 width: width,
                 zIndex: 10000,
-                left: pos.x + 1 - this.options.triggerBeforeImageWidth,
+                left: pos.x - this.options.triggerBeforeImageWidth,
                 top: pos.y + el.retrieve("triggerElement").getSize().y
             }
         }).inject(el.retrieve("triggerElement"), "after").addClass(this.options.wrapperShadow));
@@ -184,13 +184,14 @@ var mooSelecta = new Class({
 
 
         // get all options and port them to wrapper
+        var index = 0;
         el.getElements('option').each(function(option) {
             var selected = false;
             if (option.get("selected")) {
                 el.retrieve("triggerElement").set("html", option.get("text"));
                 selected = true;
             }
-            this._addOption(option, el, selected);
+            this._addOption(option, el, selected, index++);
         }, this);
 
         // figure out height of wrapper and reduce if needed
@@ -247,54 +248,45 @@ var mooSelecta = new Class({
                         if (e && e.stop) {
                             e.stop();
                         }
-                        // ops should really be cached outside here
-                        ops = this.focused.retrieve("wrapper").getElements("div."+this.options.optionClass);
-                        done = false;
-
-                        ops.each(function(el, i) {
-                            if (ops.length-1 == i || done) {
-                                return;
-                            }
-
-                            if (el.hasClass(this.options.optionClassSelected)) {
-                                ops.removeClass(this.options.optionClassOver);
-                                ops[i+1].addClass(this.options.optionClassSelected).addClass(this.options.optionClassOver);
-                                el.removeClass(this.options.optionClassSelected);
-                                done = true;
-                            }
-                        }, this);
-
-
+                        this.focused.store("previous", null);
+                        //move down
+                        var wrapper = this.focused.retrieve("wrapper");
+                        var curr = this.focused.retrieve("selected");
+                        
+                        var next = curr.getNext();
+                        //if the next is ok
+                        if(next){
+                        	curr.removeClass(this.options.optionClassSelected);
+                        	next.addClass(this.options.optionClassSelected);
+                        	this.focused.store("selected", next);
+                        	//scroll
+                        	this._scrollTo(wrapper, next);
+                        }
                     break;
                     case 38: // up arrow option navigation
                         if (e && e.stop) {
                             e.stop();
                         }
-                        ops = this.focused.retrieve("wrapper").getElements("div."+this.options.optionClass);
-                        done = false;
-
-                        ops.each(function(el, i) {
-                            if (done) {
-                                return;
-                            }
-
-                            if (el.hasClass(this.options.optionClassSelected)) {
-                                if (i > 0) {
-                                    ops.removeClass(this.options.optionClassOver);
-                                    ops[i-1].addClass(this.options.optionClassSelected).addClass(this.options.optionClassOver);
-                                    el.removeClass(this.options.optionClassSelected);
-                                }
-                                done = true;
-                            }
-                        }, this);
-
-
+                        this.focused.store("previous", null);
+                        //move up
+                        var wrapper = this.focused.retrieve("wrapper");
+                        var curr = this.focused.retrieve("selected");
+                        
+                        var prev = curr.getPrevious();
+                        //if the previous is ok
+                        if(prev){
+                        	curr.removeClass(this.options.optionClassSelected);
+                        	prev.addClass(this.options.optionClassSelected);
+                        	this.focused.store("selected", prev);
+                        	//scroll
+                        	this._scrollTo(wrapper, prev);
+                        }
                     break;
                     case 13: // enter
                         if (e && e.stop) {
                             e.stop();
                         }
-                        this.focused.retrieve("wrapper").getElements("div."+this.options.optionClassSelected).fireEvent("click");
+                        this.focused.retrieve("selected").fireEvent("click");
                     break;
                     case 9: // tabbed out, blur auto...
                         this._hideOptions(this.focused);
@@ -306,6 +298,7 @@ var mooSelecta = new Class({
                             e.stop();
                         }
                         old = this.focused;
+                        old.store("previous", null);
                         this.focused.retrieve("wrapper").getElements("div."+this.options.optionClass).getLast().fireEvent("click");
                         old.fireEvent("focus");
 
@@ -322,6 +315,7 @@ var mooSelecta = new Class({
 
                     break;
                     default:
+                    	console.log(e);
                         // the "other" keys.
                         old = this.focused;
                         ops = this.focused.retrieve("wrapper").getElements("div."+this.options.optionClass);
@@ -388,7 +382,7 @@ var mooSelecta = new Class({
         }
     },
 
-    _addOption: function(option, el, selected) {
+    _addOption: function(option, el, selected, index) {
         // internal method called by replaceSelect that adds each option as a div within the wrapper
         var text = option.get("text").trim();
         if (!text.length) {
@@ -408,11 +402,16 @@ var mooSelecta = new Class({
             "class": this.options.optionClass,
             html: text,
             events: {
-                mouseenter: function() {
-                    opDiv.addClass(this.options.optionClassOver);
+                mousemove: function() {
+                	var s = el.retrieve("selected");
+                	el.store("previous", s);
+                	s.removeClass(this.options.optionClassSelected);
+                	
+                	el.store("selected", opDiv);
+                    opDiv.addClass(this.options.optionClassSelected);
                 }.bind(this),
                 mouseleave: function() {
-                    opDiv.removeClass(this.options.optionClassOver);
+                    opDiv.removeClass(this.options.optionClassSelected);
                 }.bind(this),
                 click: function(e) {
                     if (e && e.type && e.stop) {
@@ -422,9 +421,14 @@ var mooSelecta = new Class({
                     if (opDiv.hasClass(this.options.optionDisabledClass)) {
                         return false; // do nothing!
                     }
+                    
+                    el.store("previous", null);
 
                     // menu stuff visual
-                    el.retrieve("wrapper").getChildren().removeClass(this.options.optionClassSelected);
+                    el.retrieve("selected").removeClass(this.options.optionClassSelected);
+                    //store the selected
+                    el.store("selected", opDiv);
+                    
                     opDiv.addClass(this.options.optionClassSelected);
                     el.retrieve("triggerElement").set("html", opDiv.get("text"));
 
@@ -434,27 +438,40 @@ var mooSelecta = new Class({
                 }.bind(this)
             }
         }).store("value", option.get("value")).inject(el.retrieve("wrapper")).addClass("cur");
-
+        
+        opDiv.store('index', index);
+        
         if (option.get("disabled")) {
             opDiv.addClass(this.options.optionDisabledClass);
         }
 
         if (selected) {
             opDiv.addClass(this.options.optionClassSelected);
+            //store it as the selected
+            el.store("selected", opDiv);
         }
 
+    },
+    
+    /**
+     * scrolls to a particular element in the select menu
+     */
+    _scrollTo : function(parent, option){
+    	//take the coordinates
+    	var coord = option.getSize();
+    	//console.log(option);
+    	parent.scrollTo(0, coord.y*option.retrieve('index'));
     },
 
     _toggleOptions: function(el) {
         // toggles visibility on click
         var vis = el.retrieve("wrapper").getStyle("display");
-        el.retrieve("wrapper").setStyle("display", (vis == "none") ? "block" : "none").getChildren().removeClass(this.options.optionClassOver);
+        el.retrieve("wrapper").setStyle("display", (vis == "none") ? "block" : "none").getChildren().removeClass(this.options.optionClassSelected);
         this.focused = (vis != "none") ? false : el;
 
         // scroll to selected from .toElement in core but w/o a fx.slide instance
-        var parent = el.retrieve("wrapper").getPosition(this.options.overflown);
-        var target = el.retrieve("wrapper").getElement("div." + this.options.optionClassSelected).getPosition(this.options.overflown);
-        el.retrieve("wrapper").scrollTo(target.x - parent.x, target.y - parent.y);
+        el.retrieve("selected").addClass(this.options.optionClassSelected);
+        this._scrollTo(el.retrieve("wrapper"), el.retrieve("selected"));
         this._clearSelection();
     },
 
