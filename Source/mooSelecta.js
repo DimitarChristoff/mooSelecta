@@ -22,12 +22,25 @@ provides: mooSelecta
 
 ...
 */
+(function() {
 
-var mooSelecta = new Class({
+Element.Events.outerClick = {
+    base : 'click',
+    condition : function(event){
+        event.stopPropagation();
+        return false;
+    },
+    onAdd : function(fn){
+        this.getDocument().addEvent('click', fn);
+    },
+    onRemove : function(fn){
+        this.getDocument().removeEvent('click', fn);
+    }
+};
 
-    version: "1.4.0b",
+var mooSelecta = this.mooSelecta = new Class({
 
-    updated: "28/11/2011 11:50:01",
+    version: "1.5.0",
 
     Implements: [Options,Events],
 
@@ -52,7 +65,9 @@ var mooSelecta = new Class({
         optionClassOver: "selectaOptionOver",           // onmouseover option class
         allowTextSelect: false,                         // experimental to stop accdiental text selection
         // these are keycodes that correspond to alpha numerics on most ISO keyboards for index lookups of options
-        allowedKeyboardCodes: [48,49,50,51,52,53,54,55,56,57,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90],
+        allowedKeyboardCodes: [
+            48,49,50,51,52,53,54,55,56,57,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90
+        ],
         useClickListener: true                          // binds click events to check for clicks away from dropdown.
     },
 
@@ -90,12 +105,15 @@ var mooSelecta = new Class({
             return;
         }
 
+        // store reference for funcs, avoid bind.
+        var self = this;
+
         // gets existing element's width to use
         var width = el.getSize().x;
 
         // default selected to go into wrapper
         var selectedOption = el.getElements("option").filter(function(op) {
-            return op.getProperty("selected");
+            return op.get("selected");
         });
 
         // clean up old instances.
@@ -147,6 +165,7 @@ var mooSelecta = new Class({
 
         // now hide the original selects off-screen
         // this is so the tab indexing and by-label focus works and hands us back contol.
+
         el.set({
             styles: {
                 position: "absolute",
@@ -155,19 +174,18 @@ var mooSelecta = new Class({
             },
             events: {
                 focus: function() {
-                    if (this.focused) {
-                        this._hideOptions();
+                    if (self.focused) {
+                        self._hideOptions();
                     }
 
-                    this.focused = el;
-                    this._toggleOptions(el);
-
-                }.bind(this),
+                    self.focused = el;
+                    self._toggleOptions(el);
+                },
                 blur: function(e) {
-                    if (this.focused == el) {
-                        this._toggleOptions(el);
+                    if (self.focused == el) {
+                        self._toggleOptions(el);
                     }
-                }.bind(this)
+                }
             }
         });
 
@@ -175,9 +193,7 @@ var mooSelecta = new Class({
         var lbl = document.getElement("label[for="+el.get("id")+"]");
         if (el.get("id") && lbl) {
             lbl.addEvent("click", function(e) {
-                if (e && e.stop) {
-                    e.stop();
-                }
+                e && e.stop && e.stop();
                 el.fireEvent("focus");
             });
         }
@@ -208,117 +224,113 @@ var mooSelecta = new Class({
         el.retrieve("wrapper").setStyle("display", "none");
 
         // attach a click event to trigger element
-        el.retrieve("triggerElement").addEvents({
+        var eventObject = {
             click: function(e) {
-                if (e && e.stop) {
-                    e.stop();
-                }
+                e && e.stop && e.stop();
+
                 // toggler, click on opened closes it.
-                el.fireEvent((this.focused == el) ? "blur" : "focus");
-            }.bind(this)
-        });
+                el.fireEvent((self.focused == el) ? "blur" : "focus");
+            }
+        };
+
+        if (this.options.useClickListener) {
+            eventObject["outerClick"] = this._hideOptions.bind(this);
+        }
+
+        el.retrieve("triggerElement").addEvents(eventObject);
 
         // export the managed select to the hash
         if (el.uid && el) {
             this.selects[el.uid] = el;
         }
 
+
     }, // end .replaceSelect();
 
     bindListeners: function() {
         // setup valrious click / key events
-
-        if (this.options.useClickListener) {
-            document.addEvent("click", this._bindClickListener.bind(this));
-        }
-
+        var self = this, options = this.options;
         document.addEvents({
             // keyboard listener
             keydown: function(e) {
-
                 var ops, old, done;
 
                 // if no menu is currently open, don't do anything.
-                if (!this.focused) {
+                if (!self.focused) {
                     return;
                 }
 
                 switch(e.code) {
                     case 40: // down arrow option navigation
-                        if (e && e.stop) {
-                            e.stop();
-                        }
-                        this.focused.store("previous", null);
+                        e && e.stop && e.stop();
+
+
+                        self.focused.store("previous", null);
                         //move down
-                        var wrapper = this.focused.retrieve("wrapper");
-                        var curr = this.focused.retrieve("selected");
-                        
+                        var wrapper = self.focused.retrieve("wrapper");
+                        var curr = self.focused.retrieve("selected");
+
                         var next = curr.getNext();
                         //if the next is ok
                         if(next){
-                        	curr.removeClass(this.options.optionClassSelected);
-                        	next.addClass(this.options.optionClassSelected);
-                        	this.focused.store("selected", next);
-                        	//scroll
-                        	this._scrollTo(wrapper, next);
+                            curr.removeClass(options.optionClassSelected);
+                            next.addClass(options.optionClassSelected);
+                            self.focused.store("selected", next);
+                            //scroll
+                            self._scrollTo(wrapper, next);
                         }
                     break;
                     case 38: // up arrow option navigation
-                        if (e && e.stop) {
-                            e.stop();
-                        }
-                        this.focused.store("previous", null);
+                        e && e.stop && e.stop();
+
+                        self.focused.store("previous", null);
                         //move up
-                        var wrapper = this.focused.retrieve("wrapper");
-                        var curr = this.focused.retrieve("selected");
-                        
+                        var wrapper = self.focused.retrieve("wrapper");
+                        var curr = self.focused.retrieve("selected");
+
                         var prev = curr.getPrevious();
                         //if the previous is ok
                         if(prev){
-                        	curr.removeClass(this.options.optionClassSelected);
-                        	prev.addClass(this.options.optionClassSelected);
-                        	this.focused.store("selected", prev);
-                        	//scroll
-                        	this._scrollTo(wrapper, prev);
+                            curr.removeClass(options.optionClassSelected);
+                            prev.addClass(options.optionClassSelected);
+                            self.focused.store("selected", prev);
+                            //scroll
+                            self._scrollTo(wrapper, prev);
                         }
                     break;
                     case 13: // enter
-                        if (e && e.stop) {
-                            e.stop();
-                        }
-                        this.focused.retrieve("selected").fireEvent("click");
+                        e && e.stop && e.stop();
+
+                        self.focused.retrieve("selected").fireEvent("click");
                     break;
                     case 9: // tabbed out, blur auto...
-                        this._hideOptions(this.focused);
+                        self._hideOptions(this.focused);
                     break;
                     case 34:
                     case 35:
                         // go to last option via pgdn or end
-                        if (e && e.stop) {
-                            e.stop();
-                        }
-                        old = this.focused;
+                        e && e.stop && e.stop();
+
+                        old = self.focused;
                         old.store("previous", null);
-                        this.focused.retrieve("wrapper").getElements("div."+this.options.optionClass).getLast().fireEvent("click");
+                        self.focused.retrieve("wrapper").getElements("div."+options.optionClass).getLast().fireEvent("click");
                         old.fireEvent("focus");
 
                     break;
                     case 33:
                     case 36:
                         // go to first option via pgup or home
-                        if (e && e.stop) {
-                            e.stop();
-                        }
+                        e && e.stop && e.stop();
+
                         old = this.focused;
-                        this.focused.retrieve("wrapper").getElement("div."+this.options.optionClass).fireEvent("click");
+                        self.focused.retrieve("wrapper").getElement("div."+options.optionClass).fireEvent("click");
                         old.fireEvent("focus");
 
                     break;
                     default:
-                    	console.log(e);
                         // the "other" keys.
-                        old = this.focused;
-                        ops = this.focused.retrieve("wrapper").getElements("div."+this.options.optionClass);
+                        old = self.focused;
+                        ops = self.focused.retrieve("wrapper").getElements("div."+options.optionClass);
 
                         // is is alpha numeric allowed?
                         if (this.options.allowedKeyboardCodes.contains(e.code)) {
@@ -326,8 +338,8 @@ var mooSelecta = new Class({
                             var matchingKeys = [];
                             var selected = false;
 
-                            var applicable = this.optionList["k"+this.focused.uid].filter(function(el, index) {
-                                if (ops[index].hasClass(this.options.optionClassSelected)) {
+                            var applicable = self.optionList["k"+this.focused.uid].filter(function(el, index) {
+                                if (ops[index].hasClass(options.optionClassSelected)) {
                                     selected = index;
                                 }
                                 var match = el.indexOf(e.key) === 0;
@@ -335,7 +347,7 @@ var mooSelecta = new Class({
                                     matchingKeys.push(index);
                                 }
                                 return match;
-                            }, this);
+                            });
 
                             if (applicable.length) {
                                 if (!matchingKeys.contains(selected)) {
@@ -359,14 +371,11 @@ var mooSelecta = new Class({
                         else {
                             // do nothing or disable comment to see other keys you may like to bind.
                             // console.log(e.code, e.key);
-                            if (e && e.stop) {
-                                e.stop();
-                            }
-
+                            e && e.stop && e.stop();
                         }
                     break;
                 }
-            }.bind(this)
+            }
         });
     }, // end .bindListeners()
 
@@ -397,70 +406,69 @@ var mooSelecta = new Class({
 
         Object.append(this.optionList, tempObj);
         // end store
+        var self = this, options = this.options;
 
         var opDiv = new Element("div", {
             "class": this.options.optionClass,
             html: text,
             events: {
                 mousemove: function() {
-                	var s = el.retrieve("selected");
-                	el.store("previous", s);
-                	s.removeClass(this.options.optionClassSelected);
-                	
-                	el.store("selected", opDiv);
-                    opDiv.addClass(this.options.optionClassSelected);
-                }.bind(this),
-                mouseleave: function() {
-                    opDiv.removeClass(this.options.optionClassSelected);
-                }.bind(this),
-                click: function(e) {
-                    if (e && e.type && e.stop) {
-                        e.stop();
-                    }
+                    var s = el.retrieve("selected");
+                    el.store("previous", s);
+                    s.removeClass(options.optionClassSelected);
 
-                    if (opDiv.hasClass(this.options.optionDisabledClass)) {
+                    el.store("selected", opDiv);
+                    opDiv.addClass(options.optionClassSelected);
+                },
+                mouseleave: function() {
+                    opDiv.removeClass(options.optionClassSelected);
+                },
+                click: function(e) {
+                    e && e.type && e.stop && e.stop();
+
+                    if (opDiv.hasClass(options.optionDisabledClass)) {
                         return false; // do nothing!
                     }
-                    
+
                     el.store("previous", null);
 
                     // menu stuff visual
-                    el.retrieve("selected").removeClass(this.options.optionClassSelected);
+                    el.retrieve("selected").removeClass(options.optionClassSelected);
                     //store the selected
                     el.store("selected", opDiv);
-                    
-                    opDiv.addClass(this.options.optionClassSelected);
+
+                    opDiv.addClass(options.optionClassSelected);
                     el.retrieve("triggerElement").set("html", opDiv.get("text"));
 
                     // now handle change in the real select
                     el.set("value", opDiv.retrieve("value")).fireEvent("change", e);
-                    this._toggleOptions(el);
-                }.bind(this)
+                    self._toggleOptions(el);
+                }
             }
         }).store("value", option.get("value")).inject(el.retrieve("wrapper")).addClass("cur");
-        
+
         opDiv.store('index', index);
-        
+
         if (option.get("disabled")) {
-            opDiv.addClass(this.options.optionDisabledClass);
+            opDiv.addClass(options.optionDisabledClass);
         }
 
         if (selected) {
-            opDiv.addClass(this.options.optionClassSelected);
+            opDiv.addClass(options.optionClassSelected);
             //store it as the selected
             el.store("selected", opDiv);
         }
 
     },
-    
+
     /**
      * scrolls to a particular element in the select menu
      */
     _scrollTo : function(parent, option){
-    	//take the coordinates
-    	var coord = option.getSize();
-    	//console.log(option);
-    	parent.scrollTo(0, coord.y*option.retrieve('index'));
+        //take the coordinates
+        var coord = option.getSize();
+        //console.log(option);
+        parent.scrollTo(0, coord.y*option.retrieve('index'));
     },
 
     _toggleOptions: function(el) {
@@ -501,3 +509,6 @@ var mooSelecta = new Class({
         }
     }
 }); // endClass
+
+
+})();
