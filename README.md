@@ -10,7 +10,7 @@ Style-able entirely through CSS with the original element events intact, adherin
 
 The "real" selects are being placed off-screen so their functionality is completely preserved in that any forms with them will continue working as per usual.
 
-*Now updated for MooTools 1.4 without compatibility mode.*
+*Now updated for MooTools 1.4.2 without compatibility mode.*
 
 Screenshots
 -----------
