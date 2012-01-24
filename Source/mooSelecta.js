@@ -9,7 +9,7 @@ authors: Dimitar Christoff, Andre Fiedler, Judicael Briand
 
 license: MIT-style license.
 
-version: 1.4.0a
+version: 1.6.0
 
 requires:
   - Core/String
@@ -240,8 +240,8 @@ var mooSelecta = this.mooSelecta = new Class({
         el.retrieve("triggerElement").addEvents(eventObject);
 
         // export the managed select to the hash
-        if (el.uid && el) {
-            this.selects[el.uid] = el;
+        if (el) {
+            this.selects[Slick.uidOf(el) || String.uniqueID()] = el;
         }
 
 
@@ -338,7 +338,7 @@ var mooSelecta = this.mooSelecta = new Class({
                             var matchingKeys = [];
                             var selected = false;
 
-                            var applicable = self.optionList["k"+this.focused.uid].filter(function(el, index) {
+                            var applicable = self.optionList["k"+Slick.uidOf(this.focused)].filter(function(el, index) {
                                 if (ops[index].hasClass(options.optionClassSelected)) {
                                     selected = index;
                                 }
@@ -399,10 +399,10 @@ var mooSelecta = this.mooSelecta = new Class({
         }
 
         // store options relevant to element uid.
-        var oldList = this.optionList["k" + el.uid] || [];
+        var oldList = this.optionList["k" + Slick.uidOf(el)] || [];
         oldList.push(text.toLowerCase());
         var tempObj = {};
-        tempObj["k" + el.uid] = oldList;
+        tempObj["k" + Slick.uidOf(el)] = oldList;
 
         Object.append(this.optionList, tempObj);
         // end store
