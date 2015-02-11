@@ -1,0 +1,18 @@
+{
+  "name": "mooSelecta",
+  "version": "1.6.1",
+  "homepage": "https://github.com/DimitarChristoff/mooSelecta",
+  "authors": [
+    "DimitarChristoff <christoff@gmail.com>"
+  ],
+  "description": "A MooTools *select* element styling replacement Class",
+  "main": "Source/mooSelecta.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
