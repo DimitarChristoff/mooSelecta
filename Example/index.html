@@ -1,175 +1,269 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
 <head>
-    <title>mooSelecta test page</title>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<title>mooSelecta test page</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 
-    <meta name="copyright" content="Copyright 2001-2012 Dimitar Christoff" />
-    <link type="text/css" href="css/mooSelecta.css" rel="stylesheet" />
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/mootools/1.4.2/mootools-yui-compressed.js"></script>
+	<meta name="copyright" content="Copyright 2001-2015 Dimitar Christoff"/>
+	<link type="text/css" href="css/mooSelecta.css" rel="stylesheet"/>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/mootools/1.5.1/mootools-yui-compressed.js"></script>
 </head>
 <body>
 
 
 <h1>Select Dropdown replacement through progressive enhancement</h1>
+
 <h2>Latest test through mootools 1.4.2 (core required only)</h2>
 
 <div class="formLeft">
-    <label for="customer_title" class="orange_title">Title</label>
+	<label for="customer_title" class="orange_title">Title</label>
 </div>
 <div class="formRight">
-    <select id="customer_title" name="customer_title" class="selecta" tabindex="1" style="width:70px" tabindex='1'>
-        <option value="Miss">Miss</option>
-        <option value="Mrs">Mrs</option>
+	<select id="customer_title" name="customer_title" class="selecta" style="width:70px" tabindex='1'>
+		<option value="Miss">Miss</option>
+		<option value="Mrs">Mrs</option>
 
-        <option value="Ms">Ms</option>
-        <option value="Mr" selected="selected">Mr</option>
-    </select>
+		<option value="Ms">Ms</option>
+		<option value="Mr" selected="selected">Mr</option>
+	</select>
 </div>
-<br clear="all" /><br />
+<br clear="all"/><br/>
+
 <div class="formLeft">
-    <label for="p_card_type" class="orange_title">Type of card</label>
+	<label for="p_card_type" class="orange_title">Type of card</label>
 </div>
 <div class="formRight">
-    <select class="selecta" title="Type of card" style='width: 160px;' id="p_card_type" name="p_card_type" tabindex='2' />
+	<select class="selecta" title="Type of card" style='width: 160px;' id="p_card_type" name="p_card_type" tabindex='20'>
 
-        <option disabled='disabled' value=''>Please select</option>
-        <option value='Visa'>Visa</option>
-        <option value='Visa/Delta'>Visa / Delta</option>
-        <option value='Electron'>Electron</option>
-        <option value='Switch'>Maestro / Switch</option>
-        <option value='Mastercard'>Mastercard</option>
+	<option disabled='disabled' value=''>Please select</option>
+	<option value='Visa'>Visa</option>
+	<option value='Visa/Delta'>Visa / Delta</option>
+	<option value='Electron'>Electron</option>
+	<option value='Switch'>Maestro / Switch</option>
+	<option value='Mastercard'>Mastercard</option>
 
-        <option value='Solo'>Solo</option>
-    </select>
+	<option value='Solo'>Solo</option>
+	</select>
 </div>
-<br clear="all" /><br />
+<br clear="all"/><br/>
+
 <div class="formLeft">
-    <label for="p_card_from" class="orange_title">
-        Valid From Date
-    </label>
+	<label for="p_card_from" class="orange_title">
+		Valid From Date
+	</label>
 </div>
 <div class="formRight">
-    <div class="left">
+	<div class="left">
 
-        <select class="selecta" id="p_card_from" name="p_card_from_month" tabindex='3' style="width:60px;"/>
-            <option />
-            <option value='1'>01</option><option value='2'>02</option><option value='3'>03</option><option value='4'>04</option><option value='5'>05</option><option value='6'>06</option><option value='7'>07</option><option value='8'>08</option><option value='9'>09</option><option value='10'>10</option><option value='11'>11</option><option value='12'>12</option>        </select>
+		<select class="selecta" id="p_card_from" name="p_card_from_month" tabindex='30' style="width:60px;">
+		<option/>
+		<option value='1'>01</option>
+		<option value='2'>02</option>
+		<option value='3'>03</option>
+		<option value='4'>04</option>
+		<option value='5'>05</option>
+		<option value='6'>06</option>
+		<option value='7'>07</option>
+		<option value='8'>08</option>
+		<option value='9'>09</option>
+		<option value='10'>10</option>
+		<option value='11'>11</option>
+		<option value='12'>12</option>
+		</select>
 
-    </div>
-    <div class="left bold" style="padding: 5px;"> / </div>
-    <div class="left">
-        <select class="selecta" id="p_card_from2" name="p_card_from_year" tabindex='4' style="width:80px;" />
-            <option />
-            <option value='1990'>1990</option><option value='1991'>1991</option><option value='1992'>1992</option><option value='1993'>1993</option><option value='1994'>1994</option><option value='1995'>1995</option><option value='1996'>1996</option><option value='1997'>1997</option><option value='1998'>1998</option><option value='1999'>1999</option><option value='2000'>2000</option><option value='2001'>2001</option><option value='2002'>2002</option><option value='2003'>2003</option><option value='2004'>2004</option><option value='2005'>2005</option><option value='2006'>2006</option><option value='2007'>2007</option><option value='2008'>2008</option><option value='2009'>2009</option><option value='2010'>2010</option>        </select>
+	</div>
+	<div class="left bold" style="padding: 5px;"> /</div>
+	<div class="left">
+		<select class="selecta" id="p_card_from2" name="p_card_from_year" tabindex='40' style="width:80px;">
+		<option/>
+		<option value='1990'>1990</option>
+		<option value='1991'>1991</option>
+		<option value='1992'>1992</option>
+		<option value='1993'>1993</option>
+		<option value='1994'>1994</option>
+		<option value='1995'>1995</option>
+		<option value='1996'>1996</option>
+		<option value='1997'>1997</option>
+		<option value='1998'>1998</option>
+		<option value='1999'>1999</option>
+		<option value='2000'>2000</option>
+		<option value='2001'>2001</option>
+		<option value='2002'>2002</option>
+		<option value='2003'>2003</option>
+		<option value='2004'>2004</option>
+		<option value='2005'>2005</option>
+		<option value='2006'>2006</option>
+		<option value='2007'>2007</option>
+		<option value='2008'>2008</option>
+		<option value='2009'>2009</option>
+		<option value='2010'>2010</option>
+		</select>
 
-    </div>
-    <div style="float: left;display:block;padding: 5px;font-size:9px"> * If you have this on your card</div>
+	</div>
+	<div style="float: left;display:block;padding: 5px;font-size:9px"> * If you have this on your card</div>
 </div>
-<br clear="all" /><br />
+<br clear="all"/><br/>
+
 <div class="formLeft">
-    <label for="p_card_type3" class="orange_title">Type of card</label>
+	<label for="p_card_type3" class="orange_title">Type of card</label>
 </div>
 <div class="formRight">
-    <select class="selecta2" title="Type of card" style='width: 160px;' id="p_card_type3" name="p_card_type3" tabindex='5' />
-        <option value=''>Please select</option>
+	<select class="selecta2" title="Type of card" style='width: 160px;' id="p_card_type3" name="p_card_type3" tabindex='50'>
+	<option value=''>Please select</option>
 
-        <option value='Visa'>Visa</option>
-        <option value='Visa/Delta'>Visa / Delta</option>
-        <option selected='selected' value='Electron'>Electron</option>
-        <option value='Switch' disabled='disabled'>Maestro / Switch</option>
-        <option value='Mastercard'>Mastercard</option>
-        <option value='Solo'>Solo</option>
+	<option value='Visa'>Visa</option>
+	<option value='Visa/Delta'>Visa / Delta</option>
+	<option selected='selected' value='Electron'>Electron</option>
+	<option value='Switch' disabled='disabled'>Maestro / Switch</option>
+	<option value='Mastercard'>Mastercard</option>
+	<option value='Solo'>Solo</option>
 
-    </select>
+	</select>
 </div>
-<br clear="all" /><br />
+<br clear="all"/><br/>
+
 <div class="formLeft">
-    <label for="from" class="orange_title">
-        Valid From Date
-    </label>
+	<label for="from" class="orange_title">
+		Valid From Date
+	</label>
 </div>
 <div class="formRight">
-    <div class="left" style="width: 63px">
-        <select class="selecta2" id="from" name="from" tabindex='21' style="width:60px;"/>
-            <option />
+	<div class="left" style="width: 63px">
+		<select class="selecta2" id="from" name="from" tabindex='21' style="width:60px;">
+		<option/>
 
-            <option value='1'>01</option><option value='2'>02</option><option value='3'>03</option><option value='4'>04</option><option value='5'>05</option><option value='6'>06</option><option value='7'>07</option><option value='8'>08</option><option value='9'>09</option><option value='10'>10</option><option value='11'>11</option><option value='12'>12</option>        </select>
-    </div>
+		<option value='1'>01</option>
+		<option value='2'>02</option>
+		<option value='3'>03</option>
+		<option value='4'>04</option>
+		<option value='5'>05</option>
+		<option value='6'>06</option>
+		<option value='7'>07</option>
+		<option value='8'>08</option>
+		<option value='9'>09</option>
+		<option value='10'>10</option>
+		<option value='11'>11</option>
+		<option value='12'>12</option>
+		</select>
+	</div>
 
-    <div class="left bold" style="padding: 5px;padding-top:4px"> / </div>
-    <div class="left" style="width: 83px">
-        <select class="selecta2" id="from2" name="year" tabindex='22' style="width:80px;" />
-            <option />
-            <option value='1990'>1990</option><option value='1991'>1991</option><option value='1992'>1992</option><option value='1993'>1993</option><option value='1994'>1994</option><option value='1995'>1995</option><option value='1996'>1996</option><option value='1997'>1997</option><option value='1998'>1998</option><option value='1999'>1999</option><option value='2000'>2000</option><option value='2001'>2001</option><option value='2002'>2002</option><option value='2003'>2003</option><option value='2004'>2004</option><option value='2005'>2005</option><option value='2006'>2006</option><option value='2007'>2007</option><option value='2008'>2008</option><option value='2009'>2009</option><option value='2010'>2010</option>        </select>
+	<div class="left bold" style="padding: 5px;padding-top:4px"> /</div>
+	<div class="left" style="width: 83px">
+		<select class="selecta2" id="from2" name="year" tabindex='22' style="width:80px;">
+		<option/>
+		<option value='1990'>1990</option>
+		<option value='1991'>1991</option>
+		<option value='1992'>1992</option>
+		<option value='1993'>1993</option>
+		<option value='1994'>1994</option>
+		<option value='1995'>1995</option>
+		<option value='1996'>1996</option>
+		<option value='1997'>1997</option>
+		<option value='1998'>1998</option>
+		<option value='1999'>1999</option>
+		<option value='2000'>2000</option>
+		<option value='2001'>2001</option>
+		<option value='2002'>2002</option>
+		<option value='2003'>2003</option>
+		<option value='2004'>2004</option>
+		<option value='2005'>2005</option>
+		<option value='2006'>2006</option>
+		<option value='2007'>2007</option>
+		<option value='2008'>2008</option>
+		<option value='2009'>2009</option>
+		<option value='2010'>2010</option>
+		</select>
 
-    </div>
-    <div style="float: left;display:block;padding: 5px;font-size:9px"> * If you have this on your card</div>
+	</div>
+	<div style="float: left;display:block;padding: 5px;font-size:9px"> * If you have this on your card</div>
 </div>
-<br clear="all" /><br /><br /><br />
-<div id="debug">debug events go here</div><br />
+<br clear="all"/><br/><br/><br/>
+
+<button class="dynamic">Replace contents</button>
+
+
+<div id="debug">debug events go here</div>
+<br/>
 
 
 <h2>With built-in support for:</h2>
 <ul>
-    <li>tabbing</li>
-    <li>arrow navigation</li>
+	<li>tabbing</li>
+	<li>arrow navigation</li>
 
-    <li>pgup/down</li>
-    <li>end/home</li>
-    <li>preserves original events</li>
-    <li>preserves tabindex</li>
-    <li>max height of options wrapper</li>
-    <li>CSS class-based skinning</li>
-    <li>keyboard lookup by first letter</li>
+	<li>pgup/down</li>
+	<li>end/home</li>
+	<li>preserves original events</li>
+	<li>preserves tabindex</li>
+	<li>max height of options wrapper</li>
+	<li>CSS class-based skinning</li>
+	<li>keyboard lookup by first letter</li>
 </ul>
-<br />
+<br/>
+
+
 <h2>To do:</h2>
 
 <ul>
-    <li>support for opera keyboard events</li>
-    <li>keyboard lookup by narrowing down / substrings</li>
-    <li>auto position above element if not enough space at bottom</li>
+	<li>support for opera keyboard events</li>
+	<li>keyboard lookup by narrowing down / substrings</li>
+	<li>auto position above element if not enough space at bottom</li>
 </ul>
 For the latest version, always look at the GitHub repository: <a href="https://github.com/DimitarChristoff/mooSelecta">https://github.com/DimitarChristoff/mooSelecta</a>
-<br />
-For the latest stable release, <a href="http://mootools.net/forge/p/mooselecta">http://mootools.net/forge/p/mooselecta</a>
-<br />
-<br />
+<br/>
+For the latest stable release,
+<a href="http://mootools.net/forge/p/mooselecta">http://mootools.net/forge/p/mooselecta</a>
+<br/>
+<br/>
 <script type="text/javascript" src="../Source/mooSelecta.js"></script>
 <script type="text/javascript">
-window.addEvent('domready', function() {
-    new mooSelecta({
-        wrapperHeight: 194
-    });
+	window.addEvent('domready', function(){
+		new mooSelecta({
+			wrapperHeight: 194
+		});
 
-    new mooSelecta({
-        selector: "select.selecta2",
-        triggerClass: "selecta2",
-        triggerPadding: 24,
-        triggerBeforeImage: "http://www.emblematiq.com/lab/niceforms/demo/v20/img/select-left.png",
-        triggerBeforeImageWidth: 3,
-        triggerBeforeImageHeight: 21,
-        wrapperClass: "selecta2Wrapper",
-        wrapperWidthAdjustment: 0,
-        optionClass: "selecta2Option",
-        optionClassSelected: "selecta2OptionSelected",
-        optionClassOver: "selecta2OptionOver"
-    });
+		var dynamicInstances = new mooSelecta({
+			selector: "select.selecta2",
+			triggerClass: "selecta2",
+			triggerPadding: 24,
+			triggerBeforeImage: "images/select-left.png",
+			triggerBeforeImageWidth: 3,
+			triggerBeforeImageHeight: 21,
+			wrapperClass: "selecta2Wrapper",
+			wrapperWidthAdjustment: 0,
+			optionClass: "selecta2Option",
+			optionClassSelected: "selecta2OptionSelected",
+			optionClassOver: "selecta2OptionOver"
+		});
 
-    var debug = document.id("debug");
-    document.getElements("select").addEvents({
-        "change": function() {
-            debug.set("html", this.get("id") + " changed to " + this.get("value"));
-        },
-        "blur": function() {
-            debug.set("html", this.get("id") + " blur");
-        },
-        "focus": function() {
-            debug.set("html", this.get("id") + " focused");
-        }
-    });
-});
+		var debug = document.id("debug");
+		document.getElements("select").addEvents({
+			"change": function(){
+				debug.set("html", this.get("id") + " changed to " + this.get("value"));
+			},
+			"blur": function(){
+				debug.set("html", this.get("id") + " blur");
+			},
+			"focus": function(){
+				debug.set("html", this.get("id") + " focused");
+			}
+		});
+
+		document.getElement('button').addEvent('click', function(){
+			var select = document.id('p_card_type3').empty(),
+			    c = 5;
+
+			while(c--){
+				select.adopt(new Element('option', {
+					html: 'Dynamic Option ' + c,
+					value: c
+				}));
+			}
+
+			dynamicInstances.replaceSelect(select);
+
+		});
+	});
 </script>
 </body>
 </html>
