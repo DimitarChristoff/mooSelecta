@@ -1,26 +1,26 @@
 /*
- ---
+---
 
- name: mooSelecta
+name: mooSelecta
 
- description: mooSelecta, select element styling replacement
+description: mooSelecta, select element styling replacement
 
- authors: Dimitar Christoff, Andre Fiedler, Judicael Briand
+authors: Dimitar Christoff, Andre Fiedler, Judicael Briand
 
- license: MIT-style license.
+license: MIT-style license.
 
- version: 1.6.1
+version: v1.6.1
 
- requires:
- - Core/String
- - Core/Event
- - Core/Browser
- - Core/Element
- - Core/Element.Dimensions
+requires:
+- Core/String
+- Core/Event
+- Core/Browser
+- Core/Element
+- Core/Element.Dimensions
 
- provides: mooSelecta
+provides: mooSelecta
 
- ...
+...
  */
 (function(){
 
