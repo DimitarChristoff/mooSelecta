@@ -1,7 +1,8 @@
 name: mooSelecta
 author: D_mitar
 category: Interface
+description: Selecta
 tags: [select, dropdown]
-current: 1.6.1
 docs: http://fragged.org/mooSelecta/Docs/README.txt
 demo: http://fragged.org/mooSelecta/Example/
+current: 1.6.1
